@@ -1,0 +1,35 @@
+﻿@using Anomalias.Infrastructure.Identity.Enum
+
+@if (User!.Identity!.IsAuthenticated)
+{
+    <div class="sidebar" id="side_nav">
+        <div class="header-box d-flex p-3">
+            <h1 class="fs-4">
+                <span class="bg-white text-dark rounded shadow px-2 me-1">A</span>
+                <a asp-controller="Home" asp-action="index" class="text-white text-decoration-none">Anomalias</a>
+            </h1>
+        </div>
+        <ul class="list-unstyled py-2 px-2">
+            <li supress-by-permission="@EPermissions.GERENCIADOR">
+                <a href="#administrar" class="text-decoration-none px-3 py-2  d-block has-dropdown collapsed zoom" data-bs-toggle="collapse" data-bs-target="#administrar">
+                    <i class="bi bi-gear fs-5"></i><span class="ms-2">Administração</span>
+                </a>
+                <ul id="administrar" class="list-unstyled px-2 collapse" data-bs-parent="sidebar">
+                    <li class="zoom"><a asp-controller="Funcionario" asp-action="index" class="text-decoration-none px-3 py-2  d-block"><i class="bi bi-people fs-5"></i><span class="ms-2">Funcionários</span></a></li>
+                    <li class="zoom"><a asp-controller="Setor" asp-action="index" class="text-decoration-none px-3 py-2  d-block"><i class="bi bi-building fs-5"></i><span class="ms-2">Setores</span></a></li>
+                    <li class="zoom"><a asp-controller="Problema" asp-action="index" class="text-decoration-none px-3 py-2  d-block"><i class="bi bi-card-checklist fs-5"></i><span class="ms-2">Problemas</span></a></li>
+                    <li class="zoom"><a asp-controller="Cargo" asp-action="index" class="text-decoration-none px-3 py-2  d-block"><i class="bi bi-diagram-2 fs-4"></i><span class="ms-2">Cargos</span></a></li>
+                </ul>
+            </li>
+            <li supress-by-permission="@EPermissions.ANOMALIA">
+                <a href="#anomalia" class="text-decoration-none px-3 py-2  d-block has-dropdown collapsed zoom" data-bs-toggle="collapse" data-bs-target="#anomalia">
+                    <i class="bi bi-card-list fs-5"></i><span class="ms-2">Anomalias</span>
+                </a>
+                <ul id="anomalia" class="list-unstyled px-2 collapse" data-bs-parent="sidebar">
+                    <li class="zoom"><a asp-controller="Anomalia" asp-action="RegisterAnomalia" class="text-decoration-none px-3 py-2  d-block"><i class="bi bi-pencil fs-5"></i><span class="ms-2">Cadastrar</span></a></li>
+                    <li class="zoom"><a asp-controller="Anomalia" asp-action="ConsultAnomalia" class="text-decoration-none px-3 py-2  d-block"><i class="bi bi-search fs-5"></i><span class="ms-2">Consultar</span></a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+}

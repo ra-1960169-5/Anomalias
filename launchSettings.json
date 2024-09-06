@@ -1,0 +1,19 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "anomalia.app",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}",
+      "serviceActions": {
+        "anomalia.app": "StartDebugging",
+        "apm-server": "StartWithoutDebugging",
+        "elasticsearch": "StartWithoutDebugging",
+        "kibana": "StartWithoutDebugging",
+        "papercut": "StartWithoutDebugging",
+        "sqlserver": "StartWithoutDebugging"
+      }
+    }
+  }
+}

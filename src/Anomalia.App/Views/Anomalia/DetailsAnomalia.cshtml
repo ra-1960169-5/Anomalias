@@ -1,0 +1,272 @@
+﻿@using Anomalias.Domain.Enums;
+@model AnomaliaVM;
+@{
+    ViewData["Title"] = "Detalhes do Resgistro da Anomalia";
+}
+
+<div class="container content p-5">
+    <vc:summary></vc:summary>
+    @if (Model is not null) { 
+    <div class="card-body d-flex gap-1">
+        <div class="accordion flex-fill" id="accordionDetalhesAnomalia">
+            <div class="accordion-item">
+                <div class="accordion-header" id="headingOne">
+                    <button class="accordion-button accordion-color-red" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <span class="fw-bolder"> REGISTRO Nº @Model.NumeroRegistro</span>
+                    </button>
+                </div>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionDetalhesAnomalia">
+                    <div class="accordion-body">
+                        <div class="form-row">
+                            <div class="row mb-2">
+                                <div class="col-sm-3">
+                                    <label class="control-label">Àrea com a Anomalia:</label>
+                                </div>
+                                <div class="col-sm">
+                                    <input asp-for="Setor" class="form-control" placeholder="@Model.Setor" disabled />
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-3">
+                                    <label class=" control-label">Responsável da Àrea:</label>
+                                </div>
+                                <div class="col-sm">
+                                    <input asp-for="ResponsavelSetor" class="form-control" placeholder="@Model.ResponsavelSetor" disabled />
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-3">
+                                    <label class=" control-label">Problema Encontrado No(a):</label>
+                                </div>
+                                <div class="col-sm">
+                                    <input asp-for="Problema" class="form-control" placeholder="@Model.Problema" disabled />
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-3">
+                                    <label class=" control-label">Questionamento:</label>
+                                </div>
+                                <div class="col-sm">
+                                    <textarea class="form-control" name="Questionamento" placeholder="@Model.Questionamento" asp-for="Questionamento" disabled> </textarea>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-3">
+                                    <label class="control-label">Resultado Esperado:</label>
+                                </div>
+                                <div class="col-sm">
+                                    <textarea class="form-control" name="ResultadoEsperado" placeholder="@Model.ResultadoEsperado" asp-for="ResultadoEsperado" disabled>  </textarea>
+                                </div>
+                            </div>                       
+                            <div class="row mb-2">
+                                <div class="col-sm-3">
+                                    <label class="control-label">Anexo:</label>
+
+                                    @if (Model.PossuiAnexo())
+                                    {
+                                        <a asp-controller="Anomalia" asp-action="DownloadAnexo" asp-route-id="@Model.AnexoId" target="_blank">
+                                            <span class="fa-solid fa-download fa-1x"></span>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="fa-solid fa-ban fa-1x text-danger"></span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex-fill">
+
+            <div class="container d-flex flex-column justify-content-between h-100 gap-2">
+                <div class="accordion" id="accordionAcoes">
+                    <div class="accordion-item">
+                        <div class="accordion-header" id="heading3">
+                            <button class="accordion-button accordion-color-red" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="true" aria-controls="collapse3">
+                                <span class="fw-bolder">AÇÕES</span>
+                            </button>
+                        </div>
+                        <div id="collapse3" class="accordion-collapse collapse show" aria-labelledby="heading3" data-bs-parent="#accordionAcoes">
+                            <div class="accordion-body">
+                                <div class="d-flex justify-content-around mb-2">
+                                     @if(Model.Status.Equals((int)EStatus.Andamento)){
+                                    <form asp-controller="Anomalia" asp-action="AddComentario" asp-route-id="@Model.Id" method="get">
+                                        <button type="submit" class="btn btn-primary" style="width:auto">
+                                            Comentario
+                                                    <span class="bi bi-plus-circle-fill"></span>
+                                        </button>
+                                    </form>                                   
+                                    <form asp-controller="Anomalia" asp-action="EndAnomalia" asp-route-id="@Model.Id" method="get" >
+                                        <button type="submit" class="btn btn-danger" style="width:auto">
+                                            Finalizar
+                                                    <span class="bi bi-exclamation-triangle-fill text-white" />
+                                        </button>
+                                    </form>
+                                    }
+                                        <a href="javascript:window.print()" class="btn btn-primary">Imprimir <i class="bi bi-printer-fill"></i></a>
+                                    <form method="post" asp-controller="Anomalia" asp-action="ConsultAnomalia">
+                                        <input hidden name="datainicio" value="@Model.DataAbertura">
+                                        <input hidden name="datafinal" value="@Model.DataAbertura">
+                                        <input hidden name="status" value="@Model.Status">
+                                            <button type="submit" class="btn-dark btn">Voltar<i class="bi bi-arrow-counterclockwise"></i></button>
+                                    </form>                                  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion" id="accordionInformesAdicionais">
+                    <div class="accordion-item">
+                        <div class="accordion-header" id="heading4">
+                            <button class="accordion-button accordion-color-red" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="true" aria-controls="collapse4">
+                                <span class="fw-bolder">INFORMAÇÕES ADICIONAIS</span>
+                            </button>
+                        </div>
+                        <div id="collapse4" class="accordion-collapse collapse show" aria-labelledby="heading4" data-bs-parent="#accordionInformesAdicionais">
+                            <div class="accordion-body">
+                                <div class="d-flex flex-column justify-content-start gap-1 mb-3">
+
+                                    <div>
+                                        <label class=" control-label">Responsável pela Abertura:</label>
+                                        <span>@Model.UsuarioAbertura</span>
+                                    </div>
+                                    <div>
+                                        <label class=" control-label">Total de Comentarios:</label>
+                                        <span>@Model.NumeroDeComentarios() com Anexo @Model.NumeroDeComentariosComAnexos()</span>
+                                    </div>                                 
+                                    <div>
+                                        <label class=" control-label">Aberto:</label>
+                                        <span>@Model.DataAbertura.ToString("F")</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="accordion" id="accordionInformesEncerramento">
+                    <div class="accordion-item">
+                        <div class="accordion-header" id="heading5">
+                            <button class="accordion-button accordion-color-red" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="true" aria-controls="collapse5">
+                                <span class="fw-bolder">INFORMAÇÕES DE ENCERRAMENTO</span>
+                            </button>
+                        </div>
+                        <div id="collapse5" class="accordion-collapse collapse show" aria-labelledby="heading5" data-bs-parent="#accordionInformesEncerramento">
+                            <div class="accordion-body">
+                                <div class="d-flex flex-column justify-content-start gap-1 mb-3">
+                                    @if (Model.Status.Equals((int)EStatus.Encerrado))
+                                    {
+                                        <div>
+                                            <label class=" control-label">Responsável pelo Encerramento:</label>
+                                            <span>@Model.UsuarioEncerramento</span>
+                                        </div>
+                                        <div>
+                                            <label class=" control-label">Encerrado:</label>
+                                            <span>@Model.DataEncerramento?.ToString("F")</span>
+                                        </div>
+                                        <div>
+                                            <label class=" control-label mb-1">Considerações Finais:</label>
+                                            <textarea class="form-control" placeholder="@Model.ConsideracoesFinais" asp-for="ConsideracoesFinais" disabled> </textarea>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="form-row">
+                                            <div class="row mb-2">
+                                                <div class="col-sm">
+                                                    <p>Sem Informações de Encerramento Disponiveis!</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="accordion" id="accordionComentario">
+            <div class="accordion-item">
+                <div class="accordion-header" id="heading2">
+                    <button class="accordion-button accordion-color-red" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="true" aria-controls="collapse2">
+                        <span class="fw-bolder">COMENTÁRIOS</span>
+                    </button>
+                </div>
+                <div id="collapse2" class="accordion-collapse collapse show" aria-labelledby="heading2" data-bs-parent="#accordionComentario">
+                    <div class="accordion-body scroll">
+                        @if (Model.Comentarios is not null && Model.Comentarios.Any())
+                        {
+                            @foreach (var comentario in Model.Comentarios)
+                            {
+                                <div class="form-row mb-2">
+                                    <div class="row mb-2">
+                                        <div class="col-sm-2">
+                                            <label class="control-label">Comentário:</label>
+                                        </div>
+                                        <div class="col-sm">
+                                            <textarea class="form-control" name="Comentario" placeholder="" asp-for="@comentario.Descricao" disabled> </textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <label class="control-label">Anexo:</label>
+                                            @if (comentario.PossuiAnexo())
+                                            {
+                                                <a asp-controller="Anomalia" asp-action="DownloadAnexo" asp-route-id="@comentario.AnexoId" target="_blank">
+                                                    <span class="fa-solid fa-download fa-1x"></span>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <span class="fa-solid fa-ban fa-1x text-danger"></span>
+                                            }
+                                        </div>
+                                        <div class="d-flex justify-content-end gap-1">
+                                            <label class="fs-7">Comentado por:</label>
+                                            <span class="fs-7">@comentario.ComentadoPor.ToUpperInvariant() @comentario.Data?.ToString("F")</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr />
+                            }
+                        }
+                        else
+                        {
+                            <div class="form-row">
+                                <div class="row mb-2">
+                                    <div class="col-sm">
+                                        <p>Sem comentários Disponiveis!</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    }
+</div>
+
+<div id="print-content">   
+        <h1>@Model?.NumeroRegistro</h1>  
+</div>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+}

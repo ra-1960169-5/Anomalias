@@ -1,0 +1,74 @@
+name: infra_anomalia_dev
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      SA_PASSWORD: "MeuDB@123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - db:/var/opt/mssql
+  anomalia.app:
+    container_name: anomaliaApp
+    image: ${DOCKER_REGISTRY-}anomaliaapp
+    build:
+      context: .
+      dockerfile: src/Anomalia.App/Dockerfile     
+    depends_on:
+      - sqlserver
+      - kibana
+      - papercut
+    restart: on-failure   
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.0
+    environment:
+      discovery.type: single-node
+      ES_JAVA_OPTS: -Xms1g -Xmx1g
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:7.16.0
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+  apm-server:
+    image: docker.elastic.co/apm/apm-server:7.16.0
+    container_name: apm-server
+    ports:
+      - "8200:8200"
+      - "8201:8200"
+    environment:
+      - output.elasticsearch.hosts=['http://localhost:9200']
+      - apm-server.host="0.0.0.0:8200"
+      - setup.kibana.host="kibana:5601"
+    depends_on:
+      - elasticsearch
+  papercut:
+    image: changemakerstudiosus/papercut-smtp:latest
+    container_name: papercut
+    ports:
+      - "8080:80"
+      - "25:25"   
+  server:
+        image: anomalia/server:latest
+        container_name: server    
+        build: 
+            context: ./
+            dockerfile: ./nginx/Dockerfile 
+        restart: always 
+        ports:
+            - "80:80"
+            - "443:443"
+        depends_on:
+            - anomalia.app
+  
+volumes:
+  db:

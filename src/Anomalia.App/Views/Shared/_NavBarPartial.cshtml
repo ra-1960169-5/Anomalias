@@ -1,0 +1,9 @@
+﻿@if (User!.Identity!.IsAuthenticated)
+{
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid d-flex justify-content-between pt-2 pb-2">
+            <button class="btn btn-outline-none px-1 py-0 open-btn" onclick="Toggle()"><i id="toggleIcon" class="bi bi-list fs-5 zoom"></i></button>
+            <partial name="_LoginPartial" />
+        </div>
+    </nav>
+}

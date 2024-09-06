@@ -1,0 +1,30 @@
+﻿@model ProblemaVM
+@{
+    ViewData["Title"] = "Deletar Problema ";
+}
+
+<div class="modal-header">
+    <h4 class="modal-title text-center">@ViewData["Title"]</h4>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Não"></button>
+</div>
+<form asp-action="Delete" asp-controller="Problema" method="post" class="mt-3" role="dialog">
+    <div class="modal-body">
+        <vc:summary />
+        <div class="text-center">
+            <div class="col-md-offset-2">
+                <input type=hidden asp-for="Id" />
+                <div class="text-center">Tem certeza que deseja deletar o Problema @Model.Descricao?</div>
+            </div>
+        </div>
+        <div class="mt-2 text-center">
+            <div class="col-md-offset-2">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+                <input type="submit" class="btn btn-dark" value="Sim" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

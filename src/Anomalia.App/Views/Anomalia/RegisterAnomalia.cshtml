@@ -1,0 +1,84 @@
+﻿@model RegisterAnomaliaVM;
+@{
+    ViewData["Title"] = "Registrar Anomalia";
+}
+
+<div class="container content">
+    <div class="card-body">
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <div class="accordion-header" id="headingOne">
+                    <button class="accordion-button accordion-color-red" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <span class="fw-bold fh-1">REGISTRAR ANOMALIA</span>
+                    </button>
+                </div>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <vc:summary />
+                        <form id="registerAnomalia" method="post" enctype="multipart/form-data">
+                            <div class="d-flex flex-column justify-content-around gap-3">
+                                <div class="form-group d-flex flex-row gap-3">
+                                    <label class="col-sm-2 control-label">Informe a Anomalia</label>
+                                    <div class="col-sm-8 flex-fill">
+                                        <select asp-for="SetorId" name="SetorId" asp-items="@(new SelectList(Model.Setores, "Id", "Descricao"))" class="form-select">
+                                            <option value="">SELECIONE O SETOR</option>
+                                        </select>
+                                        <span asp-validation-for="SetorId" class="text-danger"></span>
+                                        <br>
+                                        <select asp-for="ProblemaId" name="ProblemaId" asp-items="@(new SelectList(Model.Problemas, "Id", "Descricao"))" class="form-select">
+                                            <option value="">SELECIONE O PROBLEMA</option>
+                                        </select>
+                                        <span asp-validation-for="ProblemaId" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group  d-flex flex-row gap-3">
+                                    <label class="col-sm-2 control-label">Questionamento</label>
+                                    <div class="col-sm-8 flex-fill">
+                                        <textarea class="form-control" name="Questionamento" placeholder="DESCREVA COM A MAIS CLAREZA POSSÍVEL" asp-for="Questionamento"> </textarea>
+                                        <span asp-validation-for="Questionamento" class="text-danger"></span>
+
+                                    </div>
+                                </div>
+                                <div class="form-group  d-flex flex-row gap-3">
+                                    <label class="col-sm-2 control-label">Resultado esperado</label>
+                                    <div class="col-sm-8 flex-fill">
+                                        <textarea class="form-control" name="ResultadoEsperado" placeholder="DESCREVA COM A MAIS CLAREZA POSSÍVEL" asp-for="ResultadoEsperado">  </textarea>
+                                        <span asp-validation-for="ResultadoEsperado" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group d-flex flex-row gap-2">
+                                    <label class="col-sm-2 control-label">Anexo</label>
+                                    <div class="col-sm-8">
+                                        <input type="file" id="Anexo" asp-for="Anexo">
+                                        <span asp-validation-for="Anexo" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group  d-flex flex-row gap-2">
+                                    <label class="col-sm-2 control-label">
+                                        @Html.DisplayNameFor(m => m.Restrita)
+                                    </label>
+                                    <div class="col-sm-8 icheck-square">
+                                        <input asp-for="Restrita" />
+                                    </div>
+                                </div>
+                                <div class="form-group d-flex flex-row gap-2">
+
+                                    <button type="submit" class="btn btn-danger">Registrar</button>
+                                    <a class="btn-dark btn" asp-controller="Home" asp-action="Index">Voltar</a>
+
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+}

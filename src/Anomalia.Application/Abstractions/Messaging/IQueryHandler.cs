@@ -1,0 +1,8 @@
+﻿using Anomalias.Shared;
+using MediatR;
+
+namespace Anomalias.Application.Abstractions.Messaging;
+public interface IQueryHandler<in TQuery, TResponse> : IRequestHandler<TQuery, Result<TResponse>>
+    where TQuery : IQuery<TResponse>
+{
+}

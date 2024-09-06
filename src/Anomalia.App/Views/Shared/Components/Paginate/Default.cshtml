@@ -1,0 +1,52 @@
+﻿@model IPagedList;
+
+<nav class="mt-2">
+    <ul class="pagination justify-content-center">
+        @{
+            if (Model.HasPreviousPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-action="@Model.Action" asp-route-ps="@Model.PageSize" asp-route-pg="1" asp-route-search="@Model.Search" asp-route-sortColumn="@ViewBag.CurrentSort" asp-route-sortOrder="@ViewBag.CurrentSortOrder"><i class="fa-solid fa-angles-left"> </i></a>
+                </li>
+            }
+
+            if (Model.HasPreviousPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-action="@Model.Action" asp-route-ps="@Model.PageSize" asp-route-pg="@Model.PrevPage" asp-route-search="@Model.Search" asp-route-sortColumn="@ViewBag.CurrentSort" asp-route-sortOrder="@ViewBag.CurrentSortOrder"><i class="fa-solid fa-angle-left"> </i> </a>
+                </li>
+            }
+
+            for (var i = Model.MaxLeft; i <= Model.MaxRight; i++)
+            {
+                if (i == Model.PageIndex)
+                {
+                    <li class="page-item active">
+                        <a class="page-link" asp-action="@Model.Action" asp-route-ps="@Model.PageSize" asp-route-pg="@i" asp-route-search="@Model.Search" asp-route-sortColumn="@ViewBag.CurrentSort" asp-route-sortOrder="@ViewBag.CurrentSortOrder">@i <span class="sr-only">(current)</span></a>
+                    </li>
+                }
+                else
+                {
+
+                    <li class="page-item">
+                        <a class="page-link" asp-action="@Model.Action" asp-route-ps="@Model.PageSize" asp-route-pg="@i" asp-route-search="@Model.Search" asp-route-sortColumn="@ViewBag.CurrentSort" asp-route-sortOrder="@ViewBag.CurrentSortOrder">@i</a>
+                    </li>
+                }
+            }
+
+            if (Model.HasNextPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-action="@Model.Action" asp-route-ps="@Model.PageSize" asp-route-pg="@Model.NextPage" asp-route-search="@Model.Search" asp-route-sortColumn="@ViewBag.CurrentSort" asp-route-sortOrder="@ViewBag.CurrentSortOrder"><i class="fa-solid fa-angle-right"></i> </a>
+                </li>
+            }
+
+            if (Model.HasNextPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-action="@Model.Action" asp-route-ps="@Model.PageSize" asp-route-pg="@Model.TotalPages" asp-route-search="@Model.Search" asp-route-sortColumn="@ViewBag.CurrentSort" asp-route-sortOrder="@ViewBag.CurrentSortOrder"><i class="fa-solid fa-angles-right"></i></a>
+                </li>
+            }
+        }
+    </ul>
+</nav>

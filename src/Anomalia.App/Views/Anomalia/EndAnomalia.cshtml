@@ -1,0 +1,61 @@
+﻿@model EndAnomaliaVM;
+@{
+    ViewData["Title"] = "Finalizar Anomalia";
+}
+
+<div class="container content">
+    <div class="card-body">
+        <div class="accordion" id="accordionFinalizar">
+            <div class="accordion-item">
+                <div class="accordion-header" id="heading1">
+                    <button class="accordion-button accordion-color-red" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                        <span class="fw-bolder">FINALIZAR REGISTRO Nº @Model.NumeroRegistro</span>
+                    </button>
+                </div>
+                <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="heading1" data-bs-parent="#accordionFinalizar">
+                    <div class="accordion-body">                       
+                        <div class="form-row">
+                            <form method="post" asp-action="EndAnomalia" asp-controller="Anomalia">
+                                <input type="hidden" asp-for="@Model.AnomaliaId" />
+                                <div class="row mb-2">
+                                    <div class="col-sm-3">
+                                        <label class="control-label">Considerações Finais:</label>
+                                    </div>
+                                    <div class="col-sm">
+                                        <textarea class="form-control"  placeholder="INFORME O MOTIVO DO ENCERRAMENTO E SE O RESULTADO FINAL FOI ALCANÇADO" asp-for="ConsideracoesFinais"> </textarea>
+                                        <span asp-validation-for="ConsideracoesFinais" class="text-danger"></span>
+                                    </div>
+                                </div>                               
+                                <div class="row mb-2">
+                                    <div class="form-group d-flex flex-column">
+                                        <div class="col-sm-10 col-sm-offset-2">
+                                            <button type="submit" class="btn btn-danger">Finalizar</button>
+                                            <a class="btn-dark btn" href="javascript:window.history.back();">Voltar</a>                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@*     <div class="modal fade" id="myModal" tabindex="-1" aria-hidden="true" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id="myModalContent">
+                </div>
+            </div>
+        </div>
+    </div> *@
+
+</div>
+
+@section Scripts {
+    <script>
+            
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}

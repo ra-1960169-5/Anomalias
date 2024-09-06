@@ -1,0 +1,15 @@
+﻿@if (User!.Identity!.IsAuthenticated)
+{
+    <div class="dropdown open">
+        <button class="btn btn-outline-none dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-fill fs-5"></i><span class="ms-2">@User.Identity.Name</span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li>
+                <a class="dropdown-item text-black" asp-controller="account" asp-action="logout">
+                    Logout <i class="bi bi-box-arrow-right fs-4 icon-bold" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+}

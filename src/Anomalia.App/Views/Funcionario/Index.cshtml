@@ -1,0 +1,99 @@
+﻿@model PagedViewModel<FuncionarioVM>
+@{
+    ViewData["Title"] = "Todas os Funcionarios";
+}
+
+<div class="container content">
+    <div class="card-body p-5">
+        <vc:summary />
+        <h2 class="text-center">Funcionarios</h2>
+        <div class="d-flex justify-content-between">
+            <div class="col-02">
+                <a asp-controller="Account" asp-action="Register"
+                   class="btn btn-primary mb-3 " style="width:auto;">
+                    Novo
+                    <span class="bi bi-plus-circle-fill"></span>
+                </a>
+            </div>
+            <div class="col-02 ms-2">
+                <form>
+                    <input asp-for="Search" class="form-control form-control-no-border mb-sm-3" name="search" type="text" placeholder="Pesquisar..." aria-label="Search">
+                </form>
+            </div>
+        </div>
+        <div class="card p-3">
+            <div class="table-responsive">
+                <table class="table mb-3">
+                    <thead>
+                        <tr class="text-center">
+                            <th>
+                                <a asp-controller="Funcionario" asp-action="index" asp-route-sortColumn="nome" asp-route-search="@ViewBag.CurrentFilter" asp-route-pg="@Model.PageIndex" class="icon-sorting">
+                                    <i class="bi bi-arrow-up-short fs-5"></i>
+                                </a>
+                                <a asp-controller="Funcionario" asp-action="index" asp-route-sortColumn="nome" asp-route-sortOrder="desc" asp-route-search="@ViewBag.CurrentFilter" asp-route-pg="@Model.PageIndex" class="icon-sorting">
+                                    <i class="bi bi-arrow-down-short fs-5 "></i>
+                                </a>
+                                NOME
+                            </th>
+
+                            <th>AÇÃO</th>
+                        </tr>
+                    </thead>
+                    @if (Model.Items.Any())
+                    {
+                        <tbody>
+                            @foreach (var funcionario in Model.Items)
+                            {
+                                <tr class="text-center">
+                                    <td>@funcionario.Nome</td>
+                                    <td>
+                                        <div class="d-flex justify-content-center">
+                                            <a asp-controller="Funcionario" asp-action="Edit" asp-route-id="@funcionario.Id" class="text-decoration-none px-1 d-block zoom" title="Editar Funcionario" data-bs-toggle="modal" data-bs-target="#myModal" data-model=""><i class="bi bi-pencil text-danger icon-bold fs-4 "></i></a>                 
+                                            @if (funcionario.Ativo)
+                                            {
+                                                <a asp-controller="Funcionario" asp-action="Disable" asp-route-id="@funcionario.Id" title="Desativar" class="text-decoration-none px-1 d-block zoom">
+                                                    <i class="bi bi-x-circle text-danger fs-4 icon-bold"></i></a>
+                                            }
+                                            else
+                                            {
+                                                <a asp-controller="Funcionario" asp-action="Enable" asp-route-id="@funcionario.Id" title="Ativar" class="text-decoration-none px-1 d-block zoom">
+                                                    <i class="bi bi-check-circle text-success fs-4 icon-bold"></i></a>
+                                            }
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    }
+                    else
+                    {
+                        <caption class="ms-3 d-flex flex-column">
+                            Sem Funcionarios Registrados!
+                        </caption>
+                    }
+                </table>
+            </div>
+        </div>
+        <vc:paginate paginated="@Model"></vc:paginate>
+    </div>
+
+
+    <div class="modal fade" id="myModal" tabindex="-1" aria-hidden="true" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id="myModalContent">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        Modal();
+        SortActive();
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}
